@@ -32,12 +32,17 @@ main {
 main .container {
   height: auto;
   width: 50vw;
-  min-width: 400px;
+  min-width: 650px;
   background-color: white;
+  padding: 20px;
 }
 
 .name-choice {
   color: rgb(147, 112, 219);
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 form {
@@ -54,8 +59,18 @@ form .choice1 {
 form .choice2 {
   grid-area: 1/3/2/5;
 }
-.choice1,.choice2{
-    text-align: center;
+.choice1,
+.choice2 {
+  text-align: center;
+}
+
+input {
+  margin-top: 10px;
+}
+
+input:focus,
+input:hover {
+  color: rgb(147, 112, 219);
 }
 
 form button[type="submit"] {
@@ -63,6 +78,7 @@ form button[type="submit"] {
   color: white;
   background: rgb(147, 112, 219);
   font-size: 1.5rem;
+  margin-top: 10px;
 }
 
 form button[type="submit"]:hover {
@@ -77,11 +93,31 @@ button[type="submit"] {
 }
 
 .gameboard {
-  display: flex;
+  display: grid;
+  grid-template: repeat(3, 200px) / repeat(3, 200px);
+  gap: 6px;
+  padding: 20px;
   justify-content: center;
 }
 
+.gameboard .cell {
+  width: 200px;
+  height: 200px;
+  box-sizing: content-box;
+  border: 3px solid rgba(147, 112, 219, 0.7);
+  border-radius: 3px;
+}
 
+.player{
+  display: flex;
+  font-size: 2rem;
+  justify-content: space-around;
+  margin-top: 40px;
+}
+
+.restart{
+  display: none;
+}
 
 footer .foo {
   background-color: rgb(147, 112, 219);
