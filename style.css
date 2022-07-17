@@ -113,7 +113,7 @@ button[type="submit"] {
 
 .player {
   display: flex;
-  font-size: 2rem;
+  font-size: 2.5rem;
   justify-content: space-around;
   margin-top: 40px;
 }
@@ -124,6 +124,28 @@ button[type="submit"] {
 
 .restart {
   display: none;
+}
+
+.winner,
+.choices {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  margin-top: 20px;
+}
+
+button {
+  background-color: rgba(147, 112, 219, 0.5);
+  color: white;
+  font-size: 3rem;
+  border: 5px solid rgb(147, 112, 219);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+button:hover {
+  background-color: rgba(147, 112, 219, 1);
 }
 
 footer .foo {
@@ -147,21 +169,21 @@ footer .foo {
 }
 
 .cross:after {
-    content: '';
-    height: 175px;
-    border-left: 14px solid rgb(147, 112, 219);
-    position: absolute;
-    transform: rotate(45deg);
-    left: calc((175px / 2) - 7px);
+  content: "";
+  height: 175px;
+  border-left: 14px solid rgb(147, 112, 219);
+  position: absolute;
+  transform: rotate(45deg);
+  left: calc((175px / 2) - 7px);
 }
 
 .cross:before {
-    content: '';
-    height: 175px;
-    border-left: 14px solid rgb(147, 112, 219);
-    position: absolute;
-    transform: rotate(-45deg);
-    left: calc((175px / 2) - 7px);
+  content: "";
+  height: 175px;
+  border-left: 14px solid rgb(147, 112, 219);
+  position: absolute;
+  transform: rotate(-45deg);
+  left: calc((175px / 2) - 7px);
 }
 
 .foo,

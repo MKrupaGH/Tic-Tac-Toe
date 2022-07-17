@@ -10,7 +10,6 @@ const gameBoard = (() => {
 
   //querySelectors
   const gameboard = document.querySelector(".gameboard");
-  const submitBtn = document.querySelector(".submitBtn");
 
   //create grid gameboard
   //creating numerable cells in grid with functionality
@@ -24,10 +23,11 @@ const gameBoard = (() => {
       console.log(gameFlow.activePlayer);
       childSqaure.classList.add(gameFlow.activePlayer.marker);
       cell.appendChild(childSqaure);
-      gameFlow.activeChoice.push(e.target.getAttribute("number"));
+      gameFlow.activeChoice.push(Number(e.target.getAttribute("number")));
       gameFlow.roundsCounter--;
       cell.style.pointerEvents = "none";
       gameFlow.check();
+      if (gameFlow.roundsCounter === 0) return;
       gameFlow.nextPlayer();
     });
     gameboard.appendChild(cell);
@@ -51,7 +51,7 @@ const gameFlow = (() => {
   const winner = document.querySelector(".winner");
   const player1turn = document.querySelector(".player1");
   const player2turn = document.querySelector(".player2");
-
+  const playerInfo = document.querySelector(".player");
   //winning combinations
   const combinations = [
     [0, 1, 2],
@@ -70,12 +70,26 @@ const gameFlow = (() => {
         let addArr = [...combinations[i]];
         if (addArr.every((ele) => this.activeChoice.includes(ele))) {
           winner.textContent = "The winner is: " + this.activePlayer.name;
-          console.log("Win");
+          matchInfo();
         }
       }
-    } else if (this.roundsCounter === 0) {
-      winner.textContent = "It is a draw!";
     }
+    if (this.roundsCounter === 0) {
+      winner.textContent = "It is a draw!";
+      matchInfo();
+    }
+  };
+
+  const matchInfo = function () {
+    playerInfo.classList.add("restart");
+    const cells = document.querySelectorAll(".cell");
+    cells.forEach((el) => (el.style.pointerEvents = "none"));
+
+    const btn = document.querySelector("button");
+    btn.classList.remove("restart");
+    btn.addEventListener("click", () => {
+      document.location.reload();
+    });
   };
 
   const nextPlayer = function () {
@@ -104,38 +118,3 @@ const gameFlow = (() => {
     activeChoice,
   };
 })();
-
-/*const createPlayer = (event) => {
-    event.preventDefault();
-    //players
-
-    let player1;
-    let player2;
-
-    //selectors
-
-    const input1 = document.querySelector("#fname");
-    const input2 = document.querySelector("#sname");
-
-    const info = document.querySelector(".info");
-    //createPlayers
-
-    if (input1.value == "" || input2.value == "") {
-      info.textContent = "Nicknames can't be empty";
-      return;
-    } else {
-      info.textContent = "";
-      player1 = players(input1.value, "circle");
-      player2 = players(input2.value, "cross");
-    }
-
-    input1.value = "";
-    input2.value = "";
-
-    return {
-      player1,
-      player2,
-    };
-  };*/
-//event
-//submitBtn.addEventListener("click", createPlayer);
