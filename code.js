@@ -5,28 +5,35 @@ const players = (name, marker) => {
 
 //gameboard object - IIFE module
 const gameBoard = (() => {
-  let placeNumber = [];
   let choice1 = [];
   let choice2 = [];
+
   //querySelectors
   const gameboard = document.querySelector(".gameboard");
   const submitBtn = document.querySelector(".submitBtn");
 
   //create grid gameboard
-  //creating numerable cells in grid
+  //creating numerable cells in grid with functionality
   for (let i = 0; i < 9; i++) {
     const cell = document.createElement("div");
+    const childSqaure = document.createElement("div");
     cell.classList.add("cell");
     cell.setAttribute("number", i);
+    cell.appendChild(childSqaure);
     cell.addEventListener("click", (e) => {
-      console.log(e.target.getAttribute("number"));
+      console.log(gameFlow.activePlayer);
+      childSqaure.classList.add(gameFlow.activePlayer.marker);
+      cell.appendChild(childSqaure);
+      gameFlow.activeChoice.push(e.target.getAttribute("number"));
+      gameFlow.roundsCounter--;
+      cell.style.pointerEvents = "none";
+      gameFlow.check();
+      gameFlow.nextPlayer();
     });
     gameboard.appendChild(cell);
-    placeNumber.push(i);
   }
 
   return {
-    placeNumber,
     choice1,
     choice2,
   };
@@ -36,10 +43,10 @@ const gameFlow = (() => {
   //creating players
   const player1 = players("Player1", "circle");
   const player2 = players("Player2", "cross");
-
   //starting
   let activePlayer = player1;
   let roundsCounter = 9;
+  let activeChoice = gameBoard.choice1;
   //selectors
   const winner = document.querySelector(".winner");
   const player1turn = document.querySelector(".player1");
@@ -58,32 +65,34 @@ const gameFlow = (() => {
   ];
 
   const check = function () {
-    if (choice1.length >= 3) {
+    if (this.activeChoice.length >= 3) {
       for (let i = 0; i < combinations.length; i++) {
-        if (combinations[i].every((arr1) => choice1.includes(arr1))) {
-          winner.textContent = "The winner is player1!";
+        let addArr = [...combinations[i]];
+        if (addArr.every((ele) => this.activeChoice.includes(ele))) {
+          winner.textContent = "The winner is: " + this.activePlayer.name;
+          console.log("Win");
         }
       }
-    }
-    if (choice2.length >= 3) {
-      for (let i = 0; i < combinations.length; i++) {
-        if (combinations[i].every((arr2) => choice2.includes(arr2))) {
-          winner.textContent = "The winner is player2!";
-        }
-      }
-    }
-    if (roundsCounter == 0) {
+    } else if (this.roundsCounter === 0) {
       winner.textContent = "It is a draw!";
     }
   };
 
   const nextPlayer = function () {
-    if (activePlayer === player1) {
-      activePlayer = player2;
-      player2turn.style.cssText = "color:rgb(255,0,255)";
-    } else {
-      activePlayer = player1;
-      player1turn.style.cssText = "color:rgb(255,0,255)";
+    if (this.activePlayer === player1) {
+      //console.log("Im working");
+      this.activePlayer = player2;
+      //console.log(activePlayer);
+      this.activeChoice = gameBoard.choice2;
+      player2turn.classList.add("activePlayer");
+      player1turn.classList.remove("activePlayer");
+    } else if (this.activePlayer === player2) {
+      //console.log("Im working too");
+      this.activePlayer = player1;
+      //console.log(activePlayer);
+      this.activeChoice = gameBoard.choice1;
+      player2turn.classList.remove("activePlayer");
+      player1turn.classList.add("activePlayer");
     }
   };
 
@@ -92,6 +101,7 @@ const gameFlow = (() => {
     nextPlayer,
     check,
     roundsCounter,
+    activeChoice,
   };
 })();
 
